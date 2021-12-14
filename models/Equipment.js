@@ -7,6 +7,7 @@ const equipmentSchema = new mongoose.Schema({
     dateModified: {type: Date, default: Date.now },
 });
 
-const Product = mongoose.model('Equipment', equipmentSchema);
 
-module.exports = Equipment;
+
+module.exports.equipmentSchema = equipmentSchema;
+module.exports.Equipment = mongoose.model("Equipment", equipmentSchema);
