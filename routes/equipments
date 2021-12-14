@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 
-router.post('/', async (req, res) => {
+router.post('/:equipment', async (req, res) => {
     try {
         const equipment = new Equipment({
             name: req.body.name,
