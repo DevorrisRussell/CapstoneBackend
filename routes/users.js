@@ -40,6 +40,13 @@ router.post("/register", async (req, res) => {
     return res.status(500).send(`Internal Server Error: ${ex}`);
   }
 });
+router.get("/current", [auth], async (req,) => {
+  const user = await User.findById(req.user._id);
+  return res.send (user);
+})
+
+
+
 //* POST a valid login attempt
 //! when a user logs in, a new JWT token is generated and sent if their email/password credentials are correct
 router.post("/login", async (req, res) => {
