@@ -40,7 +40,7 @@ router.post("/register", async (req, res) => {
     return res.status(500).send(`Internal Server Error: ${ex}`);
   }
 });
-router.get("/current", [auth], async (req,) => {
+router.get("/current", [auth], async (req, res) => {
   const user = await User.findById(req.user._id);
   return res.send (user);
 })
