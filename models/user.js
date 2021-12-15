@@ -2,11 +2,6 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 const config = require("config");
-const { equipmentSchema } = require('./Equipment');
-
-const myEquipmentSchema = mongoose.Schema({
-  equipmentId: {type: mongoose.Schema.Types.ObjectId}
-})
 
 const userSchema = mongoose.Schema({
   name: { type: String, required: true, minLength: 5, maxLength: 50 },
@@ -17,10 +12,9 @@ const userSchema = mongoose.Schema({
     minLength: 2,
     maxLength: 255,
   },
-  myList: { type: [myEquipmentSchema], ref: 'Equipment'},
+  myList: { type: [mongoose.Schema.Types.ObjectId], default: [] },
   password: { type: String, required: true, minLength: 8, maxLength: 1024 },
   isAdmin: { type: Boolean, required: true },
-  equipments: { type: [equipmentSchema]}
 });
 
 userSchema.methods.generateAuthToken = function () {
@@ -54,10 +48,8 @@ const validateLogin = (req) => {
 };
 
 const User = mongoose.model("User", userSchema);
-const EquipmentRequest = mongoose.model("EquipmentRequest", myEquipmentSchema);
 
 module.exports.User = User;
-module.exports.EquipmentRequest = EquipmentRequest;
 module.exports.userSchema = userSchema;
 module.exports.validateUser = validateUser;
 module.exports.validateLogin = validateLogin;

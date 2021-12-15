@@ -1,8 +1,12 @@
 const router = require("express").Router();
 const express = require('express');
-
+const auth = require("../middleware/auth");
 const { Equipment } = require("../models/equipment");
 
+router.get('', async (req, res) => {
+    const equipmentList = await Equipment.find();
+    return res.send(equipmentList);
+});
 
 router.post('/:equipment', async (req, res) => {
     try {
