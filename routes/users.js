@@ -1,11 +1,13 @@
-const { User, validateLogin, validateUser } = require("../models/user");
+const { User, validateLogin, validateUser, MyEquipment } = require("../models/user");
 
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
 
 const bcrypt = require("bcrypt");
 const express = require("express");
+const { Equipment } = require("../models/Equipment");
 const router = express.Router();
+
 
 //* POST register a new user
 router.post("/register", async (req, res) => {
@@ -93,6 +95,26 @@ router.delete("/:userId", [auth, admin], async (req, res) => {
     return res.send(user);
   } catch (ex) {
     return res.status(500).send(`Internal Server Error: ${ex}`);
+  }
+});
+//post user equipment
+
+
+router.post('/current/mylist', [auth], async (req, res) => {
+  try {
+      const user = await User.findById(res.user._id);
+
+      const myEquipmentList = new Equipment({
+          name: req.body.name,
+          description: req.body.description,
+          
+        });
+        user.mylist.push(myEquipmentList);
+      await user.equipment.save();
+
+      return res.send(mylist);
+  } catch (ex) {
+      return res.status(500).send(`Internal Server Error: ${ex}`);
   }
 });
 

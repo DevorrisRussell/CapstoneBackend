@@ -54,7 +54,7 @@ const validateLogin = (req) => {
 
 const User = mongoose.model("User", userSchema);
 module.exports.User = User;
-module.exports.myEquipmentSchema = myEquipmentSchema;
+module.exports.myEquipmentSchema = MyEquipment;
 module.exports.userSchema = userSchema;
 module.exports.validateUser = validateUser;
 module.exports.validateLogin = validateLogin;

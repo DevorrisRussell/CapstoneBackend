@@ -1,6 +1,7 @@
-const Equipment = require("../models/equipment");
+const router = require("express").Router();
 const express = require('express');
-const router = express.Router();
+
+const { Equipment } = require("../models/equipment");
 
 
 router.post('/:equipment', async (req, res) => {
