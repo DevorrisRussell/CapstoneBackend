@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
     maxLength: 255,
   },
   myList: { type: [mongoose.Schema.Types.ObjectId], default: [] },
-  rented: {type: [mongoose.Schema.Types.ObjectId], default:true },
+  //rented: {type: [mongoose.Schema.Types.ObjectId], default:true },
   password: { type: String, required: true, minLength: 8, maxLength: 1024 },
   isAdmin: { type: Boolean, required: true },
 });

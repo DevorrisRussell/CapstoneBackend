@@ -120,4 +120,10 @@ router.post('/current/myList', [auth], async (req, res) => {
   }
 });
 
+router.delete('/current/equipmentId', [auth], async (req, res) => {
+  const user = await Equipment.findById(req.params.equipmentId);
+  await equipmentId.remove();
+  return res.send(equipmentId);
+});
+
 module.exports = router;
