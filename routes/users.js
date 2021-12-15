@@ -1,11 +1,11 @@
-const { User, validateLogin, validateUser, MyEquipment } = require("../models/user");
+const { User, validateLogin, validateUser, EquipmentRequest } = require("../models/user");
 
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
 
 const bcrypt = require("bcrypt");
 const express = require("express");
-const { Equipment } = require("../models/Equipment");
+const { Equipment, equipmentSchema } = require("../models/Equipment");
 const router = express.Router();
 
 
@@ -100,19 +100,19 @@ router.delete("/:userId", [auth, admin], async (req, res) => {
 //post user equipment
 
 
-router.post('/current/mylist', [auth], async (req, res) => {
+router.post('/current/myList', [auth], async (req, res) => {
   try {
-      const user = await User.findById(res.user._id);
+      const signedInUser = await User.findById(req.user._id);
 
-      const myEquipmentList = new Equipment({
+      const equipmentToBeAdded= new Equipment({
           name: req.body.name,
           description: req.body.description,
           
         });
-        user.mylist.push(myEquipmentList);
-      await user.equipment.save();
+        signedInUser.mylist.push(equipmentToBeAdded);
+      await signedInUser.save();
 
-      return res.send(mylist);
+      return res.send(equipmentToBeAdded);
   } catch (ex) {
       return res.status(500).send(`Internal Server Error: ${ex}`);
   }
