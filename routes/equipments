@@ -18,6 +18,11 @@ router.post('/:equipment', async (req, res) => {
     }
 });
 
+router.delete("/:equipmentId", [auth], async (req, res) => {
+    const equipment = await User.findById(req.params.equipmentId);
+    await equipment.remove();
+    return res.send(equipment);
+});
 
 
 
