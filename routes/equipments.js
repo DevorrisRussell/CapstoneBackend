@@ -23,9 +23,9 @@ router.post('/:equipment', async (req, res) => {
     }
 });
 
-router.delete("/:equipment_id", [auth], async (req, res) => {
-    const deleteEquipment = await equipment_id.findById(req.params.equipment_id);
-    await equipment_id.remove();
+router.delete("/:equipmentId", async (req, res) => {
+    const deleteEquipment = await Equipment.findById(req.params.equipmentId)
+    await deleteEquipment.remove();
     return res.send();
 });
 

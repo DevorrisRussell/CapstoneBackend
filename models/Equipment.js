@@ -9,6 +9,7 @@ const equipmentSchema = new mongoose.Schema({
         default:[],
     },
     isAvailable: {type:String, default: "Available"},
+   
     
     dateModified: {type: Date, default: Date.now },
 });
