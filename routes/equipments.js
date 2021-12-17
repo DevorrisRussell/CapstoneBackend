@@ -30,9 +30,17 @@ router.delete("/:equipmentId", async (req, res) => {
 });
 
 router.put("/:equipmentId/isAvailable", [auth], async (req,res)=>{
-   const available = await Equipment.findByIdAndUpdate(req.params.equipmentId.isAvailable);
-    const equipmentAvailable = req.body.isAvailable
-   return res.send(available)
+    debugger;
+    try{ 
+   const available = await Equipment.findByIdAndUpdate(
+       req.params.equipmentId,
+       { ...req.body },
+       { isAvailable : false  }
+       
+   )
+   } catch (exception){
+       console.log('Internal Server Error', exception);
+   }
    
 });
 

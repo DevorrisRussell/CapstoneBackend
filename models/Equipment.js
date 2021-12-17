@@ -8,7 +8,7 @@ const equipmentSchema = new mongoose.Schema({
         type:Array,
         default:[],
     },
-    isAvailable: {type:String, default: "Available"},
+    isAvailable: {type: Boolean, default: true },
    
     
     dateModified: {type: Date, default: Date.now },
