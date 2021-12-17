@@ -29,10 +29,12 @@ router.delete("/:equipmentId", async (req, res) => {
     return res.send();
 });
 
-router.put("/:equipment/isAvailable", [auth], async (req,res)=>{
-   const id = req.params.id;
+router.put("/:equipmentId/isAvailable", [auth], async (req,res)=>{
+   const available = await Equipment.findByIdAndUpdate(req.params.equipmentId.isAvailable);
+    const equipmentAvailable = req.body.isAvailable
+   return res.send(available)
    
-
+});
 
 
 module.exports = router;
