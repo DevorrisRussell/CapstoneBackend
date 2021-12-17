@@ -29,20 +29,9 @@ router.delete("/:equipmentId", async (req, res) => {
     return res.send();
 });
 
-router.put("/isAvailable", [auth], async (req,res)=>{
-    Post.findByIdAndUpdate(req.body.equipmentId,{
-       $push:{isAvailable:req.equipment._id}
-    },{ 
-        new: false
-    }).exec((err,result)=>{
-        if(err){
-            return res.status(422).json({error:err })
-        }else{
-            res.json(result)
-        }
-    })
-})
-
+router.put("/:equipment/isAvailable", [auth], async (req,res)=>{
+   const id = req.params.id;
+   
 
 
 
