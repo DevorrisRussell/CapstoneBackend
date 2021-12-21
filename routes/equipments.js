@@ -30,7 +30,7 @@ router.delete("/:equipmentId", async (req, res) => {
 });
 
 router.put("/:equipmentId/isAvailable", [auth], async (req,res)=>{
-    debugger;
+   
     try{ 
    const available = await Equipment.findByIdAndUpdate(
        req.params.equipmentId,
