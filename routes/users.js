@@ -10,7 +10,8 @@ const router = express.Router();
 
 
 //* POST register a new user
-router.post("/register", async (req, res) => {
+router.post("/register", async (req, res) =>
+{
   try {
     const { error } = validateUser(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -120,6 +121,25 @@ router.post('/current/myList', [auth], async (req, res) => {
   }
 });
 
+router.get('/current/myList/', async (req, res) => {
+  try {
+
+    const user = await User.findById(req.user._id);
+
+    const myEquipmentObjects = []
+
+    for (let i =0; i< user.myList.length; i++){
+      if(user.myList[i].isAccepted == 'ACCEPTED'){
+        const theList = await User.findById(user.myList[i].myListId)
+        myEquipmentObjects.push(theList);
+      }
+    }
+    
+    return res.send(myEquipmentObjects);
+  } catch (ex) {
+    return res.status(500).send(`Internal Server Error: ${ex}`);
+  }
+});
 
 
 module.exports = router;
