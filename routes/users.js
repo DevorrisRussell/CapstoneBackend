@@ -8,10 +8,8 @@ const express = require("express");
 const { Equipment, equipmentSchema } = require("../models/equipment");
 const router = express.Router();
 
-
 //* POST register a new user
-router.post("/register", async (req, res) =>
-{
+router.post("/register", async (req, res) => {
   try {
     const { error } = validateUser(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -45,10 +43,8 @@ router.post("/register", async (req, res) =>
 });
 router.get("/current", [auth], async (req, res) => {
   const user = await User.findById(req.user._id);
-  return res.send (user);
-})
-
-
+  return res.send(user);
+});
 
 //* POST a valid login attempt
 //! when a user logs in, a new JWT token is generated and sent if their email/password credentials are correct
@@ -100,46 +96,44 @@ router.delete("/:userId", [auth, admin], async (req, res) => {
 });
 //post user equipment
 
-
-router.post('/current/myList', [auth], async (req, res) => {
+router.post("/current/myList", [auth], async (req, res) => {
   try {
-      const signedInUser = await User.findById(req.user._id);
+    const signedInUser = await User.findById(req.user._id);
 
-      const equipmentToBeAdded= new Equipment({
-          name: req.body.name,
-          description: req.body.description,
-          
-        });
-        await equipmentToBeAdded.save();
-        console.log(signedInUser);
-        signedInUser.myList.push(equipmentToBeAdded._id);
-      await signedInUser.save();
+    const equipmentToBeAdded = new Equipment({
+      name: req.body.name,
+      description: req.body.description,
+      color: req.body.color,
+      serialNumber: req.body.serialNumber,
+    });
+    await equipmentToBeAdded.save();
+    console.log(signedInUser);
+    signedInUser.myList.push(equipmentToBeAdded._id);
+    await signedInUser.save();
 
-      return res.send(signedInUser);
-  } catch (ex) {
-      return res.status(500).send(`Internal Server Error: ${ex}`);
-  }
-});
-
-router.get('/current/myList/', async (req, res) => {
-  try {
-
-    const user = await User.findById(req.user._id);
-
-    const myEquipmentObjects = []
-
-    for (let i =0; i< user.myList.length; i++){
-      if(user.myList[i].isAccepted == 'ACCEPTED'){
-        const theList = await User.findById(user.myList[i].myListId)
-        myEquipmentObjects.push(theList);
-      }
-    }
-    
-    return res.send(myEquipmentObjects);
+    return res.send(signedInUser);
   } catch (ex) {
     return res.status(500).send(`Internal Server Error: ${ex}`);
   }
 });
 
+router.get("/current/myList/", async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    const myEquipmentObjects = [];
+
+    for (let i = 0; i < user.myList.length; i++) {
+      if (user.myList[i].isAccepted == "ACCEPTED") {
+        const theList = await User.findById(user.myList[i].myListId);
+        myEquipmentObjects.push(theList);
+      }
+    }
+
+    return res.send(myEquipmentObjects);
+  } catch (ex) {
+    return res.status(500).send(`Internal Server Error: ${ex}`);
+  }
+});
 
 module.exports = router;
