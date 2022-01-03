@@ -8,6 +8,9 @@ const equipmentSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  color: { type: String, required: true },
+  serialNumber: { type: String, required: true },
+
   isAvailable: { type: Boolean, default: true },
 
   dateModified: { type: Date, default: Date.now },
