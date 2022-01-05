@@ -24,6 +24,7 @@ router.post("/register", async (req, res) => {
       email: req.body.email,
       password: await bcrypt.hash(req.body.password, salt),
       isAdmin: req.body.isAdmin,
+      address: req.body.address,
     });
 
     await user.save();
