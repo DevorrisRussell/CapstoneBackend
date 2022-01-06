@@ -12,7 +12,7 @@ const equipmentSchema = new mongoose.Schema({
   serialNumber: { type: String, required: true },
 
   isAvailable: { type: Boolean, default: true },
-
+  rentedAddress: { type: String, default: null },
   dateModified: { type: Date, default: Date.now },
 });
 

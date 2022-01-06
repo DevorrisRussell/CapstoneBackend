@@ -16,7 +16,8 @@ const userSchema = mongoose.Schema({
   //rented: {type: [mongoose.Schema.Types.ObjectId], default:true },
   password: { type: String, required: true, minLength: 8, maxLength: 1024 },
   isAdmin: { type: Boolean, required: true },
-  address: { type: String, required: true, minLength: 8, maxLength: 1200 },
+  //  change address required to true
+  address: { type: String, required: false, minLength: 10 },
 });
 
 userSchema.methods.generateAuthToken = function () {
@@ -26,6 +27,7 @@ userSchema.methods.generateAuthToken = function () {
       name: this.name,
       email: this.email,
       isAdmin: this.isAdmin,
+      address: this.address,
     },
     config.get("JWT_SECRET")
   );

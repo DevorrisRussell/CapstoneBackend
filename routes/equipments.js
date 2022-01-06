@@ -13,6 +13,8 @@ router.post("/", async (req, res) => {
     const equipment = new Equipment({
       name: req.body.name,
       description: req.body.description,
+      color: req.body.color,
+      serialNumber: req.body.serialNumber,
     });
     await equipment.save();
 
@@ -34,7 +36,7 @@ router.put("/:equipmentId/isAvailable", [auth], async (req, res) => {
     console.log(req.params.equipmentId);
     const available = await Equipment.findByIdAndUpdate(
       req.params.equipmentId,
-      { isAvailable: false }
+      { isAvailable: false, rentedAddress: req.user.address }
     );
     res.json(available);
   } catch (exception) {
