@@ -13,6 +13,8 @@ const equipmentSchema = new mongoose.Schema({
 
   isAvailable: { type: Boolean, default: true },
   rentedAddress: { type: String, default: null },
+  lat: { type: Number, default: null },
+  lng: { type: Number, default: null },
   dateModified: { type: Date, default: Date.now },
 });
 

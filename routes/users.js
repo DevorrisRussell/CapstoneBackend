@@ -11,8 +11,8 @@ const router = express.Router();
 //* POST register a new user
 router.post("/register", async (req, res) => {
   try {
-    const { error } = validateUser(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    // const { error } = validateUser(req.body);
+    // if (error) return res.status(400).send(error.details[0].message);
 
     let user = await User.findOne({ email: req.body.email });
     if (user)
@@ -24,6 +24,13 @@ router.post("/register", async (req, res) => {
       email: req.body.email,
       password: await bcrypt.hash(req.body.password, salt),
       isAdmin: req.body.isAdmin,
+      streetNumber: req.body.streetNumber,
+      streetName: req.body.streetName,
+      city: req.body.city,
+      state: req.body.state,
+      address: req.body.address,
+      lat: req.body.lat,
+      lng: req.body.lng,
     });
 
     await user.save();
@@ -38,6 +45,7 @@ router.post("/register", async (req, res) => {
         isAdmin: user.isAdmin,
       });
   } catch (ex) {
+    console.log(ex);
     return res.status(500).send(`Internal Server Error: ${ex}`);
   }
 });
@@ -117,19 +125,20 @@ router.post("/current/myList", [auth], async (req, res) => {
   }
 });
 
-router.get("/current/myList/", async (req, res) => {
+router.get("/current/myList", [auth], async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
 
     const myEquipmentObjects = [];
 
     for (let i = 0; i < user.myList.length; i++) {
-      if (user.myList[i].isAccepted == "ACCEPTED") {
-        const theList = await User.findById(user.myList[i].myListId);
-        myEquipmentObjects.push(theList);
-      }
-    }
+      console.log("req", user.myList[i]);
 
+      const theList = await Equipment.findById(user.myList[i]);
+
+      myEquipmentObjects.push(theList);
+    }
+    console.log("my list", myEquipmentObjects);
     return res.send(myEquipmentObjects);
   } catch (ex) {
     return res.status(500).send(`Internal Server Error: ${ex}`);

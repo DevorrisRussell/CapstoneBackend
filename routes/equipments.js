@@ -2,13 +2,14 @@ const router = require("express").Router();
 const express = require("express");
 const auth = require("../middleware/auth");
 const { Equipment } = require("../models/equipment");
+const { User } = require("../models/user");
 
 router.get("", async (req, res) => {
   const equipmentList = await Equipment.find();
   return res.send(equipmentList);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", [auth], async (req, res) => {
   try {
     const equipment = new Equipment({
       name: req.body.name,
@@ -18,8 +19,17 @@ router.post("/", async (req, res) => {
     });
     await equipment.save();
 
+    // Save it in the user's list
+    const signedInUser = await User.findById(req.user._id);
+
+    console.log("new equpment", equipment);
+    console.log(signedInUser);
+    signedInUser.myList.push(equipment._id);
+    await signedInUser.save();
+
     return res.send(equipment);
   } catch (ex) {
+    console.log(ex);
     return res.status(500).send(`Internal Server Error: ${ex}`);
   }
 });
@@ -36,7 +46,12 @@ router.put("/:equipmentId/isAvailable", [auth], async (req, res) => {
     console.log(req.params.equipmentId);
     const available = await Equipment.findByIdAndUpdate(
       req.params.equipmentId,
-      { isAvailable: false, rentedAddress: req.user.address }
+      {
+        isAvailable: false,
+        rentedAddress: req.user.address,
+        lat: req.user.lat,
+        lng: req.user.lng,
+      }
     );
     res.json(available);
   } catch (exception) {

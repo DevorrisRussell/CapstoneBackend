@@ -17,7 +17,13 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true, minLength: 8, maxLength: 1024 },
   isAdmin: { type: Boolean, required: true },
   //  change address required to true
-  address: { type: String, required: false, minLength: 10 },
+  address: { type: String, required: false },
+  streetName: { type: String, required: false },
+  streetNumber: { type: String, required: false },
+  lat: { type: String, required: false },
+  lng: { type: String, required: false },
+  city: { type: String, required: false },
+  state: { type: String, required: false },
 });
 
 userSchema.methods.generateAuthToken = function () {
@@ -28,6 +34,12 @@ userSchema.methods.generateAuthToken = function () {
       email: this.email,
       isAdmin: this.isAdmin,
       address: this.address,
+      streetName: this.streetName,
+      streetNumber: this.streetNumber,
+      lat: this.lat,
+      lng: this.lng,
+      city: this.city,
+      state: this.state,
     },
     config.get("JWT_SECRET")
   );
