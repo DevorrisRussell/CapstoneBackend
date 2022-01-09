@@ -34,12 +34,6 @@ router.post("/", [auth], async (req, res) => {
   }
 });
 
-router.delete("/:equipmentId", async (req, res) => {
-  const deleteEquipment = await Equipment.findById(req.params.equipmentId);
-  await deleteEquipment.remove();
-  return res.send();
-});
-
 router.put("/:equipmentId/isAvailable", [auth], async (req, res) => {
   try {
     console.log("here");

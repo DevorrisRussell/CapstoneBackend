@@ -135,14 +135,20 @@ router.get("/current/myList", [auth], async (req, res) => {
       console.log("req", user.myList[i]);
 
       const theList = await Equipment.findById(user.myList[i]);
-
-      myEquipmentObjects.push(theList);
+      if (theList !== null) {
+        myEquipmentObjects.push(theList);
+      }
     }
     console.log("my list", myEquipmentObjects);
     return res.send(myEquipmentObjects);
   } catch (ex) {
     return res.status(500).send(`Internal Server Error: ${ex}`);
   }
+});
+router.delete("/current/myList/:equipmentId", [auth], async (req, res) => {
+  const deleteEquipment = await Equipment.findById(req.params.equipmentId);
+  await deleteEquipment.remove();
+  return res.send("success");
 });
 
 module.exports = router;
